@@ -27,6 +27,7 @@ class HomeController extends Controller
 
         $menu = Menu::where('default',1)->first();
         $idMenu = $menu->id;
+        $blade = $menu->vista_blade;
         $nombre = !empty($menu->nombre_largo)? $menu->nombre_largo : $menu->nombre;
 
         $vista = 'home';
@@ -35,7 +36,8 @@ class HomeController extends Controller
         {
             return view($vista)
                     ->with('title',$nombre)
-                    ->with('idMenu',$idMenu);
+                    ->with('idMenu',$idMenu)
+                    ->with('blade',$blade);
             
         }else{
             return 'Vista no definida <a href="./">Atras</a>';

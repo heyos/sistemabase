@@ -5,13 +5,13 @@
 @extends('layouts.master')
 
 @section('content')
-{{-- {{ $idMenu }} --}}
-{{-- @include('layouts.contenido',['idMenu'=>$idMenu]) --}}
+{{ $blade ?? $idMenu}}
+@includeif($blade,['idMenu'=>$idMenu])
 
 {{-- @includeif(); --}}
 
 <!-- Large modal -->
-<button type="button" class="btn btn-primary" id="openModal">Large modal</button>
+{{-- <button type="button" class="btn btn-primary" id="openModal">Large modal</button>
 
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -37,11 +37,11 @@
     </div>
   </div>
 </div>
-
+ --}}
 @endsection
 
 @section('script')
     @php
-        echo filescripts($idMenu);
+        // echo filescripts($idMenu);
     @endphp
 @endsection

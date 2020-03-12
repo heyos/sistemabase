@@ -20,13 +20,16 @@ class MenuController extends Controller
             $slug = strtoupper($slug);
             $idMenu = $menu->id;
             $padre = $menu->padre;
+            $blade = $menu->vista_blade;
             $title = !empty($menu->nombre_largo)?$menu->nombre_largo:$menu->nombre;
 
             if (view()->exists($vista))
             {
+                
                 return view($vista)
                         ->with('title',$title)
-                        ->with('idMenu',$idMenu);
+                        ->with('idMenu',$idMenu)
+                        ->with('blade',$blade);
                 
             }else{
                 return 'Vista no definida <a href="./">Atras</a>';
