@@ -42,6 +42,6 @@
 
 @section('script')
     @php
-        // echo filescripts($idMenu);
+        echo filescripts($idMenu);
     @endphp
 @endsection

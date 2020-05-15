@@ -10,8 +10,8 @@ use App\Dfilejs_menu AS DetalleFile;
 
 function menudata(){
 
-    // $user = Auth::user();
-    // $idPerfil = $user->perfil_id;
+    $user = Auth::user();
+    $idPerfil = $user->perfil_id;
 
     // return $idPerfil;
 

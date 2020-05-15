@@ -124,7 +124,7 @@
 <script src="{{asset('js/plugins.js')}}"></script>
 
 <script src="{{asset('js/main/main.js')}}"></script>
-<script src="{{ asset('js/main/ejemplo.js') }}"></script>
+{{-- <script src="{{ asset('js/main/ejemplo.js') }}"></script> --}}
 @yield('script')
 
 </body>
