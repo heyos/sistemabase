@@ -12,12 +12,12 @@ class Menu extends Model
 
     public function scopeData($query){
 
-        return $query->where('padre','0');
+        return $query->where('padre','0')->orderBy('order');
     }
 
     public function scopeSubMenu($query,$idMenu){
 
-        return $query->where('padre',$idMenu);
+        return $query->where('padre',$idMenu)->orderBy('order');
     }
 
 }

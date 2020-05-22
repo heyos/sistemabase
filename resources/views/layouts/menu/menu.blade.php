@@ -1,7 +1,8 @@
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="main-menu-content">
       <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-        <li class=" nav-item"><a href="index.html"><i class="la la-home"></i><span class="menu-title" data-i18n="nav.dash.main">Dashboard</span></a>
+        <li class=" nav-item">
+            <a href="index.html"><i class="la la-home"></i><span class="menu-title" data-i18n="nav.dash.main">Dashboard</span></a>
           <ul class="menu-content">
             <li><a class="menu-item" href="dashboard-ecommerce.html" data-i18n="nav.dash.ecommerce">eCommerce</a>
             </li>
@@ -18,11 +19,19 @@
             </a>
         </li>
 
-        <?php $data = menudata(); ?>
+        @php
+            $data = menudata();
+            dd($data);
+            $hasSub = '';
+        @endphp 
         @foreach ($data as $menu)
-            <li class="nav-item">
-                <a href="{{ url($menu->slug) }}" class="nav-link">
-                    <i class="{{ $menu->icono }}"></i><span> {{ $menu->nombre }}</span>
+            @php
+                $sub = count($menu['sub']);
+                $hasSub = $sub > 0 ? 'has-sub':'';
+            @endphp
+            <li class="nav-item {{ $hasSub }}">
+                <a href="{{ url($menu['slug']) }}">
+                    <i class="{{ $menu['icono'] }}"></i><span> {{ $menu['nombre'] }}</span>
                 </a>
             </li>
         @endforeach

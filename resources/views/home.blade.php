@@ -6,7 +6,7 @@
 
 @section('content')
 {{ $blade ?? $idMenu}}
-@includeif($blade,['idMenu'=>$idMenu])
+@includeif('admin.'.$blade,['idMenu'=>$idMenu])
 
 {{-- @includeif(); --}}
 

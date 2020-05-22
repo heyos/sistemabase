@@ -1,12 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\User;
-use App\Perfil;
-use App\Menu;
+use App\AccesoPerfilMenu;
 use App\Dfilejs_menu AS DetalleFile;
+use App\Menu;
+use App\Perfil;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 function menudata(){
 
@@ -14,29 +15,57 @@ function menudata(){
     $idPerfil = $user->perfil_id;
 
     // return $idPerfil;
+    $data = array();
+    $id = 0;
 
     $menu = Menu::data()->get();
 
-    return $menu;
+    foreach ($menu as $attr) {
+        $id = $attr -> id;
+        $slug = $attr->slug == ''?'#':$attr->slug;
+        $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
+
+        $dataSub = submenudata($id);
+
+        if(!empty($acceso)){
+            $data[] = array('id'=>$id,
+                            'slug'=>$slug,
+                            'icono'=>$attr->icono,
+                            'nombre'=>$attr->nombre,
+                            'sub'=>$dataSub);
+        }
+            
+
+    }
+
+    return $data;
 
 }
 
-function submenudata($idMenuRuta){
+function submenudata($idMenu){
 
-    $menu = Menu::where('default',1)->first();
-    $idMenu = $menu->id;
-    
-    if($idMenuRuta != ''){
-        $menu = Menu::where('id',$idMenuRuta)->first();
-        
-        if(!empty($menu->id)){
-            $idMenu = $menu->id;
-        }
-    }
+    $data = array();
+
+    $user = Auth::user();
+    $idPerfil = $user->perfil_id;
     
     $subMenu = Menu::submenu($idMenu)->get();
 
-    return $subMenu;
+    if(!empty($subMenu)){
+        foreach ($subMenu as $attr) {
+            $id = $attr -> id;
+            $slug = $attr->slug;
+            $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
+
+            if(!empty($acceso)){
+                $data[] = array('idSub' => $id,
+                                'nombre' => $slug,
+                                'nombreLargo' => $attr->nombre_largo);
+            }
+        }
+    }
+
+    return $data;
 
 }
 
@@ -54,16 +83,6 @@ function is_root(){
 
     return $response;
 
-}
-
-function routeName(){
-
-    $slug = Route::currentRouteName();
-
-    $slug = $slug==''?'Inicio':$slug;
-    $slug = strtoupper($slug);
-
-    return $slug;
 }
 
 function filescripts($idMenu){
