@@ -25,7 +25,6 @@ class MenuController extends Controller
 
             if (view()->exists($vista))
             {
-                
                 return view($vista)
                         ->with('title',$title)
                         ->with('idMenu',$idMenu)

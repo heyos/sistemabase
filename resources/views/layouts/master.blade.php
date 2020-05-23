@@ -53,37 +53,8 @@
   @include('layouts.menu.menu')
 
   <div class="app-content content">
-    <div class="content-wrapper">
-        {{-- <div class="content-header row">
-            <div class="content-header-left col-12 mb-2">
-                <h3 class="content-header-title">Card Actions</h3>
-                <div class="row breadcrumbs-top">
-                    <div class="breadcrumb-wrapper col-12">
-                      <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a>
-                        </li>
-                        <li class="breadcrumb-item"><a href="#">Components</a>
-                        </li>
-                        <li class="breadcrumb-item active">Card Actions
-                        </li>
-                      </ol>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-        <div class="content-body">
-            
-                {{-- <div class="card-header">
-                    <h4 class="card-title">Titulo @yield('title-card')</h4>
-                </div> --}}
-                
-                    
-                    @yield('content')
-                    
-                
-            
-        </div>
-    </div>
+    @yield('content')
+  </div>
 </div>
 
 <script src="{{asset('js/jquery-3.4.1.min.js')}}"></script>

@@ -5,16 +5,23 @@ use App\Dfilejs_menu AS DetalleFile;
 use App\Menu;
 use App\Perfil;
 use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+
+function actionRouteName(){
+
+    //nos retorna el path de la ruta dinamica
+    $action = Request::path();
+
+
+    return $action;
+}
 
 function menudata(){
 
     $user = Auth::user();
     $idPerfil = $user->perfil_id;
 
-    // return $idPerfil;
     $data = array();
     $id = 0;
 
@@ -59,8 +66,9 @@ function submenudata($idMenu){
 
             if(!empty($acceso)){
                 $data[] = array('idSub' => $id,
-                                'nombre' => $slug,
-                                'nombreLargo' => $attr->nombre_largo);
+                                'nombre' => $attr->nombre,
+                                'nombreLargo' => $attr->nombre_largo,
+                                'slug'=>$slug);
             }
         }
     }
