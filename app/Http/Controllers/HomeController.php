@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Menu;
+use App\Perfil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -25,7 +27,12 @@ class HomeController extends Controller
     public function index()
     {
 
-        $menu = Menu::where('default',1)->first();
+        $user = Auth::user();
+        $idPerfil = $user->perfil_id;
+        $perfil = Perfil::infoPerfil($idPerfil)->first();
+        $page = $perfil->page_default;
+
+        $menu = Menu::where('vista_blade',$page)->first();
         $idMenu = $menu->id;
         $blade = $menu->vista_blade;
         $nombre = !empty($menu->nombre_largo)? $menu->nombre_largo : $menu->nombre;

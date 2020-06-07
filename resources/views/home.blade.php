@@ -5,7 +5,7 @@
 @extends('layouts.master')
 
 @section('content')
-{{-- {{ $blade ?? $idMenu}} --}}
+{{-- {{ $blade }} --}}
 
 <div class="content-wrapper">
   <div class="content-header row">

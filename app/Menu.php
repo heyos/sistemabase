@@ -20,4 +20,9 @@ class Menu extends Model
         return $query->where('padre',$idMenu)->orderBy('order');
     }
 
+    public function scopeDataMenu($query,$slug){
+
+        return $query->where('slug',$slug) ;
+    }
+
 }

@@ -8,13 +8,34 @@ use App\User;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
-function actionRouteName(){
+function verifyAccessRoute(){
 
+    $response = false;
     //nos retorna el path de la ruta dinamica
     $action = Request::path();
 
+    $slug = $action;
+    $data = array();
+    if(strpos($action,'/') !== false){
+        $data = explode('/',$action);
+        $slug = $data[0];
 
-    return $action;
+    }
+
+    $menu = Menu::dataMenu($slug)->first();
+
+    if(!empty($menu)){
+        $idMenu = $menu->id;
+        $perfil = Auth::user()->perfil_id;
+
+        $acceso = AccesoPerfilMenu::menuAcceso($perfil,$idMenu)->first();
+
+        if(!empty($acceso)){
+            $response =  true;
+        }
+    }
+        
+    return $response;
 }
 
 function menudata(){
@@ -25,25 +46,32 @@ function menudata(){
     $data = array();
     $id = 0;
 
-    $menu = Menu::data()->get();
+    if(!session()->has('menudata')){
 
-    foreach ($menu as $attr) {
-        $id = $attr -> id;
-        $slug = $attr->slug == ''?'#':$attr->slug;
-        $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
+        $menu = Menu::data()->get();
 
-        $dataSub = submenudata($id);
+        foreach ($menu as $attr) {
+            $id = $attr -> id;
+            $slug = $attr->slug == ''?'#':$attr->slug;
+            $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
 
-        if(!empty($acceso)){
-            $data[] = array('id'=>$id,
-                            'slug'=>$slug,
-                            'icono'=>$attr->icono,
-                            'nombre'=>$attr->nombre,
-                            'sub'=>$dataSub);
+            $dataSub = submenudata($id);
+
+            if(!empty($acceso)){
+                $data[] = array('id'=>$id,
+                                'slug'=>$slug,
+                                'icono'=>$attr->icono,
+                                'nombre'=>$attr->nombre,
+                                'sub'=>$dataSub);
+            }
         }
-            
 
+        session(['menudata'=>$data]);
+    }else{
+        $data = session('menudata');
     }
+
+        
 
     return $data;
 

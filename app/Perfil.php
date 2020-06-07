@@ -9,4 +9,8 @@ class Perfil extends Model
     //
     protected $table = 'Perfil';
     protected $primaryKey = 'id';
+
+    public function scopeInfoPerfil($query,$id){
+        return $query -> where('id',$id);
+    }
 }

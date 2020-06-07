@@ -15,7 +15,7 @@ class MenuController extends Controller
     {
         
         $menu = Menu::where('slug',$slug)->first();
-        if(!empty($menu->id)){
+        if(!empty($menu)){
             $vista = 'home';
             $slug = strtoupper($slug);
             $idMenu = $menu->id;

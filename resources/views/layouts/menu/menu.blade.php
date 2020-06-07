@@ -6,6 +6,7 @@
             $data = menudata();
             $hasSub = '';
             // $url = actionRouteName();
+            // dd($data);
         @endphp
         @foreach ($data as $menu)
             @php

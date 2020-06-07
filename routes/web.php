@@ -12,6 +12,7 @@
 */
 
 Auth::routes();
+Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 Route::group(['middleware'=>'auth'],function(){
 
@@ -19,7 +20,10 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/home', 'HomeController@index')->name('home');
 
     //SLUG DE LAS VISTAS
-    Route::get('/{slug}','MenuController@index');
+    Route::group(['middleware'=>'verifyAccessRoute'],function(){
+        Route::get('/{slug}','MenuController@index');
+    });
+    
 
     // DATATABLES
     Route::prefix('data')->group(function(){
@@ -37,3 +41,4 @@ Route::group(['middleware'=>'auth'],function(){
 
 
 });
+
