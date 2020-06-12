@@ -18,6 +18,7 @@
   <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/vendors.css')}}">
   <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/forms/icheck/icheck.css')}}">
   <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/forms/icheck/custom.css')}}">
+  <link rel="stylesheet" type="text/css" href="{{asset('app-assets/fonts/simple-line-icons/style.css')}}">
   <!-- END VENDOR CSS-->
   <!-- BEGIN MODERN CSS-->
   <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/app.css')}}">
@@ -29,6 +30,7 @@
   <!-- END Page Level CSS-->
   <!-- BEGIN Custom CSS-->
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
+  <link rel="stylesheet" type="text/css" href="{{asset('css/custom.css')}}">
   <!-- END Custom CSS-->
 </head>
 <body class="horizontal-layout horizontal-menu 1-column  bg-full-screen-image menu-expanded blank-page blank-page"
@@ -76,6 +78,11 @@ type="text/javascript"></script>
 <!-- BEGIN PAGE LEVEL JS-->
 <script type="text/javascript" src="{{asset('app-assets/js/scripts/ui/breadcrumbs-with-stats.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/forms/form-login-register.js')}}" type="text/javascript"></script>
+
+<script src="{{asset('js/plugins.js')}}"></script>
+<script src="{{asset('js/jquery.validate.js')}}"></script>
+<script src="{{asset('js/main/main.js')}}" type="text/javascript"></script>
+<script src="{{asset('js/main/login.js')}}" type="text/javascript"></script>
 <!-- END PAGE LEVEL JS-->
 </body>
 </html>

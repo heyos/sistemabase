@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Perfil;
 
 class LoginController extends Controller
 {
@@ -39,11 +41,40 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    // protected function authenticated(Request $request, $user)
-    // {
-    //     //
-    //     return(' Login Successful!');
-    //     //The rest of the functions you want to be called can be done here (eg AJAX)
-    // }
+    protected function authenticated(Request $request, $user)
+    {
+
+        $success = true;
+        $message = 'Ingreso exitoso, espere un momento estamos cargando los modulos.';
+        $page = 'home';
+        $pageInfo = '';
+        
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        $credentials = request(['email', 'password']);
+
+        if(!Auth::attempt($credentials)){
+            $success = false;
+            $message = "Error en el inicio de sesion";
+        }else{
+            $perfil = $user->perfil_id;
+
+            $datosPerfil = Perfil::infoPerfil($perfil)->first();
+            $pageInfo = $datosPerfil->page_default;
+            $arr = explode('.',$pageInfo);
+            $page = $arr[1];
+
+        }
+
+        return response()->json([
+            'success'=>$success,
+            'message'=>$message,
+            'page'=> $page
+        ]);
+        
+    }
     
 }

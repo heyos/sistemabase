@@ -8,10 +8,8 @@ use App\User;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
-function verifyAccessRoute(){
+function actionPath(){
 
-    $response = false;
-    //nos retorna el path de la ruta dinamica
     $action = Request::path();
 
     $slug = $action;
@@ -21,6 +19,40 @@ function verifyAccessRoute(){
         $slug = $data[0];
 
     }
+
+    return $slug;
+
+}
+
+function activeMenu(){
+
+    $slug = actionPath();
+    $menu = Menu::dataMenu($slug)->first();
+    $idMenuPadre = $menu->padre;
+    $idMenu = $menu->id;
+    $padre = '';
+    $hijo = '';
+
+    $datos = array();
+
+    if($idMenuPadre != 0){
+        $padre = $idMenuPadre;
+        $hijo = $idMenu;
+    }else{
+        $padre = $idMenu;
+    }
+
+    $datos = array('padre' => $padre,
+                    'hijo' => $hijo);
+
+    return $datos;
+}
+
+function verifyAccessRoute(){
+
+    $response = false;
+    //nos retorna el path de la ruta dinamica
+    $slug = actionPath();
 
     $menu = Menu::dataMenu($slug)->first();
 

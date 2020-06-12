@@ -5,22 +5,30 @@
         @php
             $data = menudata();
             $hasSub = '';
+            $activePadre = '';
+            $activeHijo = '';
             // $url = actionRouteName();
             // dd($data);
+            $activeMenu = activeMenu();
         @endphp
         @foreach ($data as $menu)
             @php
                 $sub = $menu['sub'];
                 $contSub = count($menu['sub']);
                 $hasSub = $contSub > 0 ? 'has-sub':'';
+                $activePadre = $menu['id'] == $activeMenu['padre'] ? 'active':'';
             @endphp
-            <li class="nav-item {{ $hasSub }}">
+            <li class="nav-item {{ $hasSub.' '.$activePadre}}">
                 <a href="{{ url($menu['slug']) }}">
                     <i class="{{ $menu['icono'] }}"></i><span> {{ $menu['nombre'] }}</span>
                     @if ($contSub > 0)
                         <ul class="menu-content">
                             @foreach ($sub as $submenu)
-                                <li>
+                                @php
+                                    $activeHijo = $submenu['idSub'] == $activeMenu['hijo'] ? 'active':'';
+                                @endphp
+
+                                <li class="{{ $activeHijo }}">
                                     <a class="menu-item" href="{{ $submenu['slug'] }}" >{{ $submenu['nombre'] }}</a>
                                 </li>
                             @endforeach

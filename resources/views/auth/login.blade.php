@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="card-body">
-        <form class="form-horizontal" method="POST" action="{{ route('login') }}" novalidate>
+        <form class="form-horizontal" id="formLogin" method="POST" novalidate>
             @csrf
             <fieldset class="form-group position-relative has-icon-left">
                 <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="correo@dominio.com" required autofocus>
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-6 col-12 float-sm-left text-center text-sm-right"><a href="recover-password.html" class="card-link">Forgot Password?</a></div>
             </div>
-            <button type="submit" class="btn btn-outline-info btn-block"><i class="ft-unlock"></i> Login</button>
+            <button type="submit" class="button-send btn btn-outline-info btn-block"><i class="ft-unlock"></i> Login</button>
         </form>
     </div>
     <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1">

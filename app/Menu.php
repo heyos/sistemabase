@@ -25,4 +25,9 @@ class Menu extends Model
         return $query->where('slug',$slug) ;
     }
 
+    public function scopeDataMenuId($query,$idMenu){
+
+        return $query->where('id',$idMenu) ;
+    }
+
 }
