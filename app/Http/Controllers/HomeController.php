@@ -31,24 +31,17 @@ class HomeController extends Controller
         $perfil = $user->perfil;
         $page = $perfil->page_default;
 
-        $menu = Menu::where('vista_blade',$page)->first();
-        $idMenu = $menu->id;
-        $blade = $menu->vista_blade;
-        $slug = $menu->slug;
-        $nombre = !empty($menu->nombre_largo)? $menu->nombre_largo : $menu->nombre;
+        $ar = explode('.',$page);
+        $slug = $ar[1];
 
-        $vista = 'admin.'.$blade;
-                
+        $vista = 'admin.'.$page;
+
         if (view()->exists($vista))
         {
-            return view($vista)
-                    ->with('title',$nombre)
-                    ->with('idMenu',$idMenu)
-                    ->with('slug',$slug)
-                    ->with('blade',$blade);
+            return redirect('admin/'.$slug);
             
         }else{
-            return 'Vista no definida <a href="./">Atras</a>';
+            return 'Vista no definida <a href="'.url('/').'">Atras</a>';
         }
         
     }

@@ -19,7 +19,7 @@
                 $activePadre = $menu['id'] == $activeMenu['padre'] ? 'active':'';
             @endphp
             <li class="nav-item {{ $hasSub.' '.$activePadre}}">
-                <a href="{{ url($menu['slug']) }}">
+                <a href="{{ url('admin/'.$menu['slug']) }}">
                     <i class="{{ $menu['icono'] }}"></i><span> {{ $menu['nombre'] }}</span>
                     @if ($contSub > 0)
                         <ul class="menu-content">

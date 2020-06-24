@@ -127,7 +127,7 @@ function actionPath(){
     $data = array();
     if(strpos($action,'/') !== false){
         $data = explode('/',$action);
-        $slug = $data[0];
+        $slug = $data[1];
 
     }
 

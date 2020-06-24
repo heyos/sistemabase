@@ -18,11 +18,13 @@ class VerifyRouteSlug
 
         $slug = actionPath();
         $verify = verifyAccessRoute($slug);
+        
 
         if($verify){
             return $next($request);
         }else{
             abort(403);
+            // return 'Vista no definida <a href="'.url('/').'">Atras</a>';
         }
 
         

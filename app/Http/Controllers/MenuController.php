@@ -15,6 +15,7 @@ class MenuController extends Controller
     {
         
         $menu = Menu::where('slug',$slug)->first();
+        
         if(!empty($menu)){
             
             $idMenu = $menu->id;

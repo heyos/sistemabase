@@ -46,7 +46,7 @@ function urlPath(){
     var protocol = window.location.protocol;
     var URLdomain = window.location.host;
 
-    var url = protocol+'//'+URLdomain+'/';
+    var url = protocol+'//'+URLdomain+'/admin/';
 
     return url;
 }
