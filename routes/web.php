@@ -15,7 +15,7 @@ Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 
 Route::prefix('admin')->group(function(){
-    
+
     Auth::routes();
 
     Route::group(['middleware'=>'auth'],function(){
@@ -33,6 +33,7 @@ Route::prefix('admin')->group(function(){
         Route::prefix('data')->group(function(){
             // Route::get('cateproducto-data', 'CatProductoController@getData')->name('cateproducto.data');
             Route::get('users-data/{slug}', 'UserController@getData')->name('users.data');
+            Route::get('perfil-data/{slug}', 'UserController@getData')->name('perfil.data');
         });
         
 
@@ -44,6 +45,7 @@ Route::prefix('admin')->group(function(){
             
             //USUARIOS
             Route::resource('users','UserController');
+            Route::resource('perfil','PerfilController');
         });
 
 

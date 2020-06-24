@@ -51,6 +51,16 @@ function urlPath(){
     return url;
 }
 
+function urlPathRoot(){
+
+    var protocol = window.location.protocol;
+    var URLdomain = window.location.host;
+
+    var url = protocol+'//'+URLdomain+'/';
+
+    return url;
+}
+
 function resetFormulario(form){
 
     $(form+' input[type=text]').val('');
@@ -88,9 +98,7 @@ function notification(title,message,type){
     
 }
 
-function cargarDataModal(ruta,type,str,modal,form){
-
-    var url = urlPath()+'controller/'+ruta;
+function cargarDataModal(url,type,str,modal,form){
 
     if(type == ''){
         type = 'POST';
@@ -125,7 +133,7 @@ function cargarDataModal(ruta,type,str,modal,form){
 
         },
         error: function(e){
-            
+            unBlockPage();
             msgErrorsForm(e);
             
         }
@@ -136,7 +144,6 @@ function cargarDataModal(ruta,type,str,modal,form){
 
 function deleteRow(url,table,slug=null){
 
-    var ruta = urlPath()+'controller/'+url;
     var str = 'slug='+slug;
 
     bootbox.dialog({
@@ -156,7 +163,7 @@ function deleteRow(url,table,slug=null){
                         beforeSend:function(){
                             blockPage();
                         },
-                        url: ruta,
+                        url: url,
                         cache: false,
                         type: "DELETE",
                         dataType: "json",

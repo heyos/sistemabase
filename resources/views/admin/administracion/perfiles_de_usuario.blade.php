@@ -36,10 +36,10 @@
     <div class="card">
       <div class="card-head">
         <div class="card-header">
-          <h4 class="card-title">Todos los Usuarios</h4>
+          <h4 class="card-title">Todos los Perfiles </h4>
           <a class="heading-elements-toggle"><i class="la la-ellipsis-h font-medium-3"></i></a>
           <div class="heading-elements">
-            <button type="button" id="btnAdd" class="btn btn-black text-white btn-sm"><i class="ft-plus white"></i> Agregar Usuario</button>
+            <button type="button" id="btnAdd" class="btn btn-black text-white btn-sm"><i class="ft-plus white"></i> Agregar Perfil</button>
           </div>
         </div>
       </div>
@@ -52,9 +52,9 @@
                 <tr>
                   <th>#</th>
                   <th>Nombre</th>
-                  <th>Email</th>
-                  <th>Perfil</th>
-                  <th>Actions</th>
+                  <th>Pagina de Inicio</th>
+                  <th>Es Root?</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody id="listadoOk">

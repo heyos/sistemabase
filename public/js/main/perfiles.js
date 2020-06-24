@@ -112,7 +112,6 @@ $(document).ready(function() {
                 $(form +' input[name=accion]').val('edit');
                 $(form +' input[name=id]').val(id);
                 $(modal+ ' .modal-title').text('Actualizar Usuario');
-                // $(modal).modal('show');
                 cargarDataModal(controller,'GET','',modal,form);
 
                 break;

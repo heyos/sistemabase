@@ -26,7 +26,7 @@ class DeleteSessionData
      */
     public function handle(Logout $event)
     {
-        //
+        //variables de sesion que se eliminaran al cerrar sesion
         session()->forget('menudata');
     }
 }

@@ -19,7 +19,6 @@ class VerifyRouteSlug
         $slug = actionPath();
         $verify = verifyAccessRoute($slug);
         
-
         if($verify){
             return $next($request);
         }else{

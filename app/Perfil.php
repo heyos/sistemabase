@@ -12,6 +12,10 @@ class Perfil extends Model
     protected $table = 'Perfil';
     protected $primaryKey = 'id';
 
+    protected $fillable = [
+        'nombre', 'page_default', 'is_root',
+    ];
+
     
     public function scopeInfoPerfil($query,$id){
         return $query -> where('id',$id);
