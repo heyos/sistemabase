@@ -41,8 +41,6 @@ function menudata(){
         $data = session('menudata');
     }
 
-        
-
     return $data;
 
 }
