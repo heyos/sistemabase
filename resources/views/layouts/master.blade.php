@@ -49,6 +49,12 @@
 
 <body class="vertical-layout vertical-compact-menu 2-columns menu-expanded fixed-navbar" data-open="click" data-menu="vertical-compact-menu" data-col="2-columns">
 
+  <div id="preloader">
+    <div class="text-center " id="status">
+        <img src="{{ asset('Preloader.gif') }}" alt="Preloader" class="img-responsive" style="margin: 0 auto">
+    </div>
+  </div>
+
   @include('layouts.menu.navbar')
   @include('layouts.menu.menu')
 
@@ -74,7 +80,7 @@
 <script src="{{asset('app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/tables/datatable/dataTables.rowReorder.min.js')}}"></script>
-
+<script src="{{asset('app-assets/vendors/js/forms/validation/jqBootstrapValidation.js')}}"></script>
 <!-- END PAGE VENDOR JS-->
 <!-- BEGIN MODERN JS-->
 <script src="{{asset('app-assets/js/core/app-menu.js')}}" type="text/javascript"></script>
@@ -83,10 +89,10 @@
 <!-- END MODERN JS-->
 <!-- BEGIN PAGE LEVEL JS-->
 <script src="{{asset('app-assets/js/scripts/ui/breadcrumbs-with-stats.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/pages/dashboard-sales.js')}}" type="text/javascript"></script>
+{{-- <script src="{{asset('app-assets/js/scripts/pages/dashboard-sales.js')}}" type="text/javascript"></script> --}}
 
 <!-- END PAGE LEVEL JS-->
-<script src="{{asset('js/jquery-ui-1-11-4/jquery-ui.min.js')}}"></script>
+{{-- <script src="{{asset('js/jquery-ui-1-11-4/jquery-ui.min.js')}}"></script> --}}
 <script src="{{asset('js/jquery.validate.js')}}"></script>
 <script src="{{asset('js/jquery.alphanum.js')}}"></script>
 <script src="{{asset('js/sweetalert.min.js')}}"></script>

@@ -60,10 +60,9 @@ class LoginController extends Controller
             $success = false;
             $message = "Error en el inicio de sesion";
         }else{
-            $perfil = $user->perfil_id;
+            $perfil = $user->perfil;
 
-            $datosPerfil = Perfil::infoPerfil($perfil)->first();
-            $pageInfo = $datosPerfil->page_default;
+            $pageInfo = $perfil->page_default;
             $arr = explode('.',$pageInfo);
             $page = $arr[1];
 

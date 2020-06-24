@@ -8,68 +8,6 @@ use App\User;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
-function actionPath(){
-
-    $action = Request::path();
-
-    $slug = $action;
-    $data = array();
-    if(strpos($action,'/') !== false){
-        $data = explode('/',$action);
-        $slug = $data[0];
-
-    }
-
-    return $slug;
-
-}
-
-function activeMenu(){
-
-    $slug = actionPath();
-    $menu = Menu::dataMenu($slug)->first();
-    $idMenuPadre = $menu->padre;
-    $idMenu = $menu->id;
-    $padre = '';
-    $hijo = '';
-
-    $datos = array();
-
-    if($idMenuPadre != 0){
-        $padre = $idMenuPadre;
-        $hijo = $idMenu;
-    }else{
-        $padre = $idMenu;
-    }
-
-    $datos = array('padre' => $padre,
-                    'hijo' => $hijo);
-
-    return $datos;
-}
-
-function verifyAccessRoute(){
-
-    $response = false;
-    //nos retorna el path de la ruta dinamica
-    $slug = actionPath();
-
-    $menu = Menu::dataMenu($slug)->first();
-
-    if(!empty($menu)){
-        $idMenu = $menu->id;
-        $perfil = Auth::user()->perfil_id;
-
-        $acceso = AccesoPerfilMenu::menuAcceso($perfil,$idMenu)->first();
-
-        if(!empty($acceso)){
-            $response =  true;
-        }
-    }
-        
-    return $response;
-}
-
 function menudata(){
 
     $user = Auth::user();
@@ -87,7 +25,7 @@ function menudata(){
             $slug = $attr->slug == ''?'#':$attr->slug;
             $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
 
-            $dataSub = submenudata($id);
+            $dataSub = submenudata($id,$idPerfil);
 
             if(!empty($acceso)){
                 $data[] = array('id'=>$id,
@@ -109,13 +47,10 @@ function menudata(){
 
 }
 
-function submenudata($idMenu){
+function submenudata($idMenu,$idPerfil){
 
     $data = array();
 
-    $user = Auth::user();
-    $idPerfil = $user->perfil_id;
-    
     $subMenu = Menu::submenu($idMenu)->get();
 
     if(!empty($subMenu)){
@@ -155,7 +90,7 @@ function is_root(){
 
 function filescripts($idMenu){
     
-    $files = DetalleFile::scriptsModel($idMenu);
+    $files = DetalleFile::scriptsModel($idMenu)->get();
     $str = '';
     if(count($files) > 0){
         foreach ($files as $key => $script) {
@@ -177,4 +112,129 @@ function user_ref(){
     }
 
     return $user_id;
+}
+
+//*************************************************************
+// FUNCIONES PARA VALIDAR ACCESOS DINAMICOS A LAS RUTAS
+//************************************************************
+
+//nos retorna el path de la ruta dinamica
+function actionPath(){
+
+    $action = Request::path();
+
+    $slug = $action;
+    $data = array();
+    if(strpos($action,'/') !== false){
+        $data = explode('/',$action);
+        $slug = $data[0];
+
+    }
+
+    return $slug;
+
+}
+
+//retorna el menu de navegacion activo
+function activeMenu(){
+
+    $slug = actionPath();
+    $parts = array();
+
+    if(empty($slug)){
+        $perfil = Auth::user()->perfil;
+        $page_default = $perfil->page_default;
+        $parts = explode('.',$page_default);
+        $slug = $parts[1];
+    }
+
+    $menu = Menu::dataMenu($slug)->first();
+    $idMenuPadre = $menu->padre;
+    $idMenu = $menu->id;
+    $padre = '';
+    $hijo = '';
+
+    $datos = array();
+
+    if($idMenuPadre != 0){
+        $padre = $idMenuPadre;
+        $hijo = $idMenu;
+    }else{
+        $padre = $idMenu;
+    }
+
+    $datos = array('padre' => $padre,
+                    'hijo' => $hijo);
+
+    return $datos;
+}
+
+//verifica que la ruta sea valida para el acceso segun el perfil
+function verifyAccessRoute($slug){
+
+    $response = false;
+    
+    $menu = Menu::dataMenu($slug)->first();
+
+    if(!empty($menu)){
+        $idMenu = $menu->id;
+        $perfil = Auth::user()->perfil_id;
+
+        $acceso = AccesoPerfilMenu::menuAcceso($perfil,$idMenu)->first();
+
+        if(!empty($acceso)){
+            $response =  true;
+        }
+    }
+        
+    return $response;
+}
+
+//obtener los permisos otorgados para esta ruta segun el perfil
+function permisos($slug,$action){
+
+    $menu = Menu::dataMenu($slug)->first();
+    $permisos = array();
+    $mantenimiento = "";
+    $respuesta = false;
+        
+    if(!empty($menu)){
+        $idMenu = $menu->id;
+        $user = Auth::user();
+        $perfil = $user->perfil_id;
+        
+        $acceso = AccesoPerfilMenu::menuAcceso($perfil,$idMenu)->first();
+
+        if(!empty($acceso)){
+
+            $mantenimiento = $acceso->mantenimiento;
+
+            if(!empty($mantenimiento)){
+
+                $permisos = explode(',',$mantenimiento);
+
+                if(in_array($action,$permisos)){
+                   $respuesta =  true;
+                }                
+                
+            }
+            
+        }
+    }
+
+    return $respuesta;
+
+}
+
+//********************************************************************************
+
+//*****************************************************
+//PERFIL
+//*****************************************************
+
+function listPerfil(){
+
+    $lista = Perfil::all(['id','nombre']);
+
+    return $lista;
 }

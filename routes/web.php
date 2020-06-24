@@ -28,6 +28,7 @@ Route::group(['middleware'=>'auth'],function(){
     // DATATABLES
     Route::prefix('data')->group(function(){
         // Route::get('cateproducto-data', 'CatProductoController@getData')->name('cateproducto.data');
+        Route::get('users-data/{slug}', 'UserController@getData')->name('users.data');
     });
     
 
@@ -36,7 +37,9 @@ Route::group(['middleware'=>'auth'],function(){
 
         //CATEGORIA PRODUCTOS
         // Route::resource('categoriaproducto','CatProductoController');
-
+        
+        //USUARIOS
+        Route::resource('users','UserController');
     });
 
 

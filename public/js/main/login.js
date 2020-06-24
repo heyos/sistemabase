@@ -14,7 +14,7 @@ $(document).ready(function(){
             $.ajax({
                 beforeSend: function(){
                     $('.button-send').prop('disabled', true);
-                    $('.button-send').html('<i class="ft-refresh-cw"></i> Cargando ...');
+                    $('.button-send').html('<i class="la la-refresh spinner"></i> Cargando ...');
                 },
                 type: 'POST',
                 url: path,
@@ -33,25 +33,12 @@ $(document).ready(function(){
                     }
 
                 },
-                error: function(e){
-
+                error: function(xhr,textStatus,thrownError){
+                    
                     $('.button-send').prop('disabled', false);
                     $('.button-send').html('<i class="ft-unlock"></i> Login ');
                     
-                    //capturamos los errores que nos provee laravel
-                    var dataError = e.responseJSON.errors;
-
-                    var str = '';
-                    //recorremos el arreglo para concatenar todos los errores
-                    $.each(dataError,function(error){
-                        
-                        $.each(dataError[error],function(m){
-                            str += '<i class="ft-check"></i> '+dataError[error][m]+'<br>'; //lo almacenamos en esta variable
-                        });
-
-                    });
-                    
-                    notification('Error..!', str,'error');
+                    msgErrors(xhr);
 
                 }
 

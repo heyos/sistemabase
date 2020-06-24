@@ -16,19 +16,21 @@ class MenuController extends Controller
         
         $menu = Menu::where('slug',$slug)->first();
         if(!empty($menu)){
-            $vista = 'home';
-            $slug = strtoupper($slug);
+            
             $idMenu = $menu->id;
             $padre = $menu->padre;
             $blade = $menu->vista_blade;
             $title = !empty($menu->nombre_largo)?$menu->nombre_largo:$menu->nombre;
+
+            $vista = 'admin.'.$blade;
 
             if (view()->exists($vista))
             {
                 return view($vista)
                         ->with('title',$title)
                         ->with('idMenu',$idMenu)
-                        ->with('blade',$blade);
+                        ->with('blade',$blade)
+                        ->with('slug',$slug);
                 
             }else{
                 return 'Vista no definida <a href="./">Atras</a>';

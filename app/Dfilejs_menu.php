@@ -16,7 +16,7 @@ class Dfilejs_menu extends Model
         $sql = DB::table('filejs AS f')
                 ->join('dfilejs_menu AS d','d.file_id','=','f.id')
                 ->select('f.descripcion')
-                ->where('d.menu_id',$idMenu)->get();
+                ->where('d.menu_id',$idMenu);
 
         return $sql;               
 

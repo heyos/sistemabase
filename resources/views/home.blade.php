@@ -1,11 +1,11 @@
 @section('title')
-    {{ $title }}
+    Home
 @endsection
 
 @extends('layouts.master')
 
 @section('content')
-{{-- {{ $blade }} --}}
+
 
 <div class="content-wrapper">
   <div class="content-header row">
@@ -18,7 +18,7 @@
               <a href="{{ url('/') }}">Home</a>
             </li>
             <li class="breadcrumb-item active">
-              {{ $title }}
+              Home
             </li>
           </ol>
         </div>
@@ -31,7 +31,7 @@
     </div>
   </div>
   <div class="content-body">
-    @includeif('admin.'.$blade,['idMenu'=>$idMenu])
+  
   </div>
 
 </div>
