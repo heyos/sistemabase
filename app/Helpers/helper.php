@@ -8,10 +8,21 @@ use App\User;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
+function accesosPerfil($idPerfil){
+    $accesos = Perfil::where('id','=',$idPerfil)->with('accesosPerfil')->first();
+
+    $data = $accesos->accesosPerfil->pluck('menu_id')->toArray();
+
+    return $data;
+
+
+}
+
 function menudata(){
 
     $user = Auth::user();
     $idPerfil = $user->perfil_id;
+    $acceso = accesosPerfil($idPerfil);
 
     $data = array();
     $id = 0;
@@ -23,11 +34,12 @@ function menudata(){
         foreach ($menu as $attr) {
             $id = $attr -> id;
             $slug = $attr->slug == ''?'#':$attr->slug;
-            $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
+            // $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
+            
 
             $dataSub = submenudata($id,$idPerfil);
 
-            if(!empty($acceso)){
+            if(in_array($id,$acceso)){
                 $data[] = array('id'=>$id,
                                 'slug'=>$slug,
                                 'icono'=>$attr->icono,
@@ -48,6 +60,7 @@ function menudata(){
 function submenudata($idMenu,$idPerfil){
 
     $data = array();
+    $acceso = accesosPerfil($idPerfil);
 
     $subMenu = Menu::submenu($idMenu)->get();
 
@@ -55,9 +68,10 @@ function submenudata($idMenu,$idPerfil){
         foreach ($subMenu as $attr) {
             $id = $attr -> id;
             $slug = $attr->slug;
-            $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
+            // $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
+            
 
-            if(!empty($acceso)){
+            if(in_array($id,$acceso)){
                 $data[] = array('idSub' => $id,
                                 'nombre' => $attr->nombre,
                                 'nombreLargo' => $attr->nombre_largo,
@@ -233,6 +247,19 @@ function permisos($slug,$action){
 function listPerfil(){
 
     $lista = Perfil::all(['id','nombre']);
+
+    return $lista;
+}
+
+//*****************************************************
+
+//*****************************************************
+//PAGES
+//*****************************************************
+
+function listPages(){
+
+    $lista = Menu::all(['id','nombre','vista_blade']);
 
     return $lista;
 }

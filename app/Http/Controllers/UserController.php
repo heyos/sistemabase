@@ -160,20 +160,22 @@ class UserController extends Controller
 
             $user = User::find($id);
 
-            $data = [
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'perfil_id'=>$request->perfil_id
-            ];
+            if(!empty($user)){
+                $data = [
+                    'name'=>$request->name,
+                    'email'=>$request->email,
+                    'perfil_id'=>$request->perfil_id
+                ];
 
-            if(!empty($request->password)){
-                $data['password'] = Hash::make($request->password);
+                if(!empty($request->password)){
+                    $data['password'] = Hash::make($request->password);
+                }
+
+                $user->update($data);
+
+                $respuesta = true;
+                $message = "Registro actualizado exitosamente.";
             }
-
-            $user->update($data);
-
-            $respuesta = true;
-            $message = "Registro actualizado exitosamente.";
 
         }else{
             $message = 'No tiene los permisos suficientes para completar esta accion';
@@ -204,11 +206,14 @@ class UserController extends Controller
 
             $user = User::find($id);
 
-            $user->delete();
+            if(!empty($user)){
+                $user->delete();
 
-            $respuesta = true;
-            $message = "Registro eliminado exitosamente.";
-            
+                $respuesta = true;
+                $message = "Registro eliminado exitosamente.";
+            }else{
+                $message = "Registro no existe, no se completo la accion.";
+            }
 
         }else{
             $message = 'No tiene los permisos suficientes para completar esta accion';

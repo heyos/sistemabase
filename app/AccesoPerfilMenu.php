@@ -25,4 +25,6 @@ class AccesoPerfilMenu extends Model
         return $query;
         
     }
+
+    
 }

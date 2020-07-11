@@ -1,9 +1,11 @@
 var form = '#formUsuario';
 var modal = '#modalRegistro';
+var modalPage = '#modalInicio';
 var url = urlPath();
 var urlRoot = urlPathRoot();
-var urlAction = url+'controller/users';
-var urlData = url+'data/users-data/usuarios';
+var urlAction = url+'controller/perfil';
+var slug = $('#slug').val();
+var urlData = url+'data/perfil-data/'+slug;
 
 $(document).ready(function() {
     
@@ -29,9 +31,9 @@ $(document).ready(function() {
         columns: [
 
             {data: 'DT_RowIndex', name: 'DT_RowIndex',className:'text-center'},
-            {data: 'name', name: 'name',className:'text-center'},
-            {data: 'email', name: 'email', className:'text-center'},
-            {data: 'perfil', name: 'perfil', className:'text-center'},
+            {data: 'nombre', name: 'nombre',className:'text-center'},
+            {data: 'page_inicio', name: 'page_inicio', className:'text-center'},
+            {data: 'isRoot', name: 'isRoot', className:'text-center', searchable: false},
             {data: 'action', name: 'action', className:'text-center',orderable: false, searchable: false},
 
         ],
@@ -52,13 +54,13 @@ $(document).ready(function() {
 
     $('#btn-save').click(function(){
 
-        var slug = $('#slug').val();
+        
         var str = $(form).serialize()+'&slug='+slug;
         var type = 'POST';
         var controller = urlAction;
         var accion = $(form+' input[name="accion"]').val();
         
-        if(accion == 'edit'){
+        if(accion == 'edit' || accion=='start'){
             type = 'PUT';
             var id = $(form+' input[name="id"]').val();
             controller += '/'+id;
@@ -76,7 +78,13 @@ $(document).ready(function() {
             success: function(response){
 
                 if(response.respuesta == true){
-                    $(modal).modal('hide');
+                    
+                    if(accion == 'start'){
+                       $(modalPage).modal('hide'); 
+                    }else{
+                        $(modal).modal('hide');
+                    }
+
                     table.draw();
                     notification('Exito..!', response.message,'success');
                 }else{
@@ -114,6 +122,10 @@ $(document).ready(function() {
                 $(modal+ ' .modal-title').text('Actualizar Usuario');
                 cargarDataModal(controller,'GET','',modal,form);
 
+                break;
+
+            case 'start':
+                
                 break;
 
             case 'delete':

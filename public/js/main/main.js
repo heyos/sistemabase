@@ -1,5 +1,10 @@
 (function($) {
 
+    $('.switch').switcher();
+    $('.select2').select2({
+        'width': '100%'
+    });
+
     "use strict";
     $(window).on('load', function() { // makes sure the whole site is loaded 
         // hidePreloader();
@@ -70,6 +75,11 @@ function resetFormulario(form){
 
     if($(form+' input[type=password]').length > 0){
         $(form+' input[type=password]').val('');
+    }
+
+    if($(form+' input[type=checkbox]').length > 0){
+        $(form+' div.switcher').removeClass('checked');
+        $(form+' input[type=checkbox]').prop('checked',false);
     }
 
     $(form+' div').removeClass('has-error');

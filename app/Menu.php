@@ -30,4 +30,13 @@ class Menu extends Model
         return $query->where('id',$idMenu) ;
     }
 
+    public function scopeDataCustomColumns($query,$where){
+        return $query->where($where)->orderBy('nombre');
+    }
+
+    public function perfiles(){
+        return $this->hasMany(Perfil::class,'page_default','vista_blade');
+    }
+
+
 }

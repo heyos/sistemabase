@@ -32,7 +32,7 @@
     </div>
   </div>
   <div class="content-body">
-    
+    {{-- {{ dd(accesosPerfil(2)) }} --}}
     <div class="card">
       <div class="card-head">
         <div class="card-header">
@@ -69,7 +69,7 @@
   </div>
 </div>
 
-<div id="modalRegistro" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+<div id="modalRegistro" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -79,39 +79,25 @@
             </button>
         </div>
         <div class="modal-body">
-            <form method="post" id="formUsuario">
+            <form method="post" id="formRol">
                 @csrf
                 <input type="hidden" id="accion" name="accion" value="add" required>
                 <input type="hidden" id="id" name="id" value="0" required="">
 
                 <div class="form-group">
                     <div class="controls">
-                      <label>Nombres</label>
-                      <input type="text" id="name" name="name" class="form-control">
+                      <label>Nombre</label>
+                      <input type="text" id="nombre" name="nombre" class="form-control">
                     </div>
                 </div>
+                
                 <div class="form-group">
                     <div class="controls">
-                      <label>Perfil</label>
-                      <select id="perfil_id" name="perfil_id" class="form-control">
-                        @foreach (listPerfil() as $perfil)
-                          <option value="{{ $perfil->id }}">{{ $perfil->nombre }}</option>
-                        @endforeach
-                      </select>
+                      <label>Es Root?</label><br>
+                      <input type="checkbox" id="is_root" class="switch" data-class="switcher-success" name="is_root" value="1">
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="controls">
-                      <label>Email</label>
-                      <input type="text" id="email" name="email" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group oculto">
-                    <div class="controls">
-                      <label>Password</label>
-                      <input type="password" id="password" name="password" class="form-control">
-                    </div>
-                </div>
+                
             </form>
         </div>
         <div class="modal-footer">
@@ -120,6 +106,39 @@
         </div>
     </div>
   </div>
+</div>
+
+<div id="modalInicio" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Seleccionar Inicio de Pagina</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formPage">
+                  @csrf
+                  <input type="hidden" id="accion" name="accion" value="start" required>
+                  <input type="hidden" id="id" name="id" value="0" required="">
+                  <div class="form-group">
+                      <label>Perfil</label>
+                      <input name="nombre" id="nombre" class="form-control" type="text" readonly="readonly">
+                  </div>
+                  <div class="form-group">
+                      <label>Pagina de Inicio</label>
+                      <select class="form-control select2" id="page_default" name="page_default">
+                      </select>
+                  </div>
+                </form>
+            </div> 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="btn-save" class="btn btn-success">Guardar</button>
+            </div>
+        </div> 
+    </div>
 </div>
 
 @endsection

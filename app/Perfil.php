@@ -9,13 +9,14 @@ class Perfil extends Model
 {
     use SoftDeletes;
     //
-    protected $table = 'Perfil';
+    protected $table = 'perfil';
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'nombre', 'page_default', 'is_root',
     ];
 
+    protected $dates = ['deleted_at'];
     
     public function scopeInfoPerfil($query,$id){
         return $query -> where('id',$id);
@@ -24,5 +25,13 @@ class Perfil extends Model
     public function users(){
 
         return $this->hasMany(User::class,'perfil_id');
+    }
+
+    public function pageInicio(){
+        return $this->belongsTo(Menu::class,'page_default','vista_blade');
+    }
+
+    public function accesosPerfil(){
+        return $this->hasMany(AccesoPerfilMenu::class,'perfil_id');
     }
 }

@@ -33,7 +33,7 @@ Route::prefix('admin')->group(function(){
         Route::prefix('data')->group(function(){
             // Route::get('cateproducto-data', 'CatProductoController@getData')->name('cateproducto.data');
             Route::get('users-data/{slug}', 'UserController@getData')->name('users.data');
-            Route::get('perfil-data/{slug}', 'UserController@getData')->name('perfil.data');
+            Route::get('perfil-data/{slug}', 'PerfilController@getData')->name('perfil.data');
         });
         
 
