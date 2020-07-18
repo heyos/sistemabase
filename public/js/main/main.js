@@ -132,7 +132,20 @@ function cargarDataModal(url,type,str,modal,form){
                 var data = response.data;
 
                 $.each(data,function(e){
-                    $(form+' #'+e).val(data[e]);
+                    
+                    if($(form+ ' input[type=checkbox][name="'+e+'"]').length > 0){
+                        
+                        if(data[e] == '1'){
+                            $(form+' div.switcher').addClass('checked');
+                            $(form+' #'+e).prop('checked',true);
+                        }else{
+                            $(form+' div.switcher').removeClass('checked');
+                            $(form+' #'+e).prop('checked',false);
+                        }
+                        
+                    }else{
+                        $(form+' #'+e).val(data[e]);
+                    }
                 });
 
                 $(modal).modal('show');

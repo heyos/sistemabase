@@ -1,5 +1,6 @@
-var form = '#formUsuario';
+var form = '#formRegistro';
 var modal = '#modalRegistro';
+var formPage = '#formPage'
 var modalPage = '#modalInicio';
 var url = urlPath();
 var urlRoot = urlPathRoot();
@@ -17,7 +18,7 @@ $(document).ready(function() {
     });
 
     //DATA
-    var table = $('#list-users').DataTable({
+    var table = $('#list').DataTable({
 
         serverSide: true,
         ajax: {
@@ -47,7 +48,7 @@ $(document).ready(function() {
 
         resetFormulario(form);
         $(form +' input[name=accion]').val('add');
-        $(modal+ ' .modal-title').text('Registrar Usuario');
+        $(modal+ ' .modal-title').text('Registrar Nuevo Perfil');
         $(modal).modal('show');
         
     });
@@ -60,7 +61,7 @@ $(document).ready(function() {
         var controller = urlAction;
         var accion = $(form+' input[name="accion"]').val();
         
-        if(accion == 'edit' || accion=='start'){
+        if(accion == 'edit'){
             type = 'PUT';
             var id = $(form+' input[name="id"]').val();
             controller += '/'+id;
@@ -79,12 +80,8 @@ $(document).ready(function() {
 
                 if(response.respuesta == true){
                     
-                    if(accion == 'start'){
-                       $(modalPage).modal('hide'); 
-                    }else{
-                        $(modal).modal('hide');
-                    }
-
+                    $(modal).modal('hide');
+                    
                     table.draw();
                     notification('Exito..!', response.message,'success');
                 }else{
@@ -112,19 +109,72 @@ $(document).ready(function() {
         var id = $(this).attr('href');
 
         var controller = urlAction+'/'+id;
-
+        
+        
         switch(accion){
 
             case 'edit':
                 resetFormulario(form);
                 $(form +' input[name=accion]').val('edit');
                 $(form +' input[name=id]').val(id);
-                $(modal+ ' .modal-title').text('Actualizar Usuario');
+                $(modal+ ' .modal-title').text('Actualizar Perfil');
                 cargarDataModal(controller,'GET','',modal,form);
 
                 break;
 
             case 'start':
+
+                resetFormulario(formPage);
+                $(formPage +' input[name=id]').val(id);
+                controller = urlAction+'/page-default/'+id;
+
+                var opt = '';
+
+                $.ajax({
+                    beforeSend:function(){
+                        blockPage();
+                    },
+                    url: controller,
+                    cache: false,
+                    type: 'GET',
+                    dataType: "json",
+                    success: function(response){
+
+                        unBlockPage();
+
+                        if(response.respuesta == true){
+
+                            $(formPage +' input[name=accion]').val('start');
+                            $(formPage +' input[name=id]').val(id);
+                            $(formPage +' input[name=nombre]').val(response.info);
+
+                            var pages = response.data;
+
+                            $.each(pages,function(e){
+                    
+                               opt += '<option value="'+pages[e]['vista']+'">'+pages[e]['nombre']+'</option>';
+                            
+                            });
+
+                            $('#page_default').html(opt);
+                            $('#page_default').val(response.default).trigger('change');
+                            
+                            $(modalPage).modal('show');
+                                                    
+                        }else{
+                            notification('Error..!', response.message,'error');
+                            
+                        }
+
+                    },
+                    error: function(e){
+                        
+                        unBlockPage();
+                        msgErrorsForm(e);
+                        
+                    }
+
+                });
                 
                 break;
 
@@ -133,6 +183,50 @@ $(document).ready(function() {
                 break;
         }
 
-    })
+    });
+
+    //actualizar pagina de inicio
+    $('#btn-page').click(function(){
+
+        var str = $(formPage).serialize()+'&slug='+slug;
+        var type = 'PUT';
+        var controller = urlAction;
+        var accion = $(formPage+' input[name="accion"]').val();
+        var id = $(formPage+' input[name="id"]').val();
+        controller += '/'+id;
+        
+
+        $.ajax({
+            beforeSend:function(){
+                blockPage();
+            },
+            url: controller,
+            cache: false,
+            type: type,
+            dataType: "json",
+            data: str,
+            success: function(response){
+
+                if(response.respuesta == true){
+                    
+                    $(modalPage).modal('hide'); 
+                    
+                    table.draw();
+                    notification('Exito..!', response.message,'success');
+                }else{
+                    notification('Error..!', response.message,'error');
+                    unBlockPage();
+                }
+
+            },
+            error: function(e){
+                
+                unBlockPage();
+                msgErrorsForm(e);
+                
+            }
+
+        });
+    });
 
 });

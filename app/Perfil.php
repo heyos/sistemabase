@@ -13,7 +13,7 @@ class Perfil extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'nombre', 'page_default', 'is_root',
+        'nombre', 'is_root',
     ];
 
     protected $dates = ['deleted_at'];

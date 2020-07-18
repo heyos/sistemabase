@@ -15,12 +15,18 @@ class PerfilController extends Controller
 
         $slug = $request->slug;
         $perfil = Perfil::with('pageInicio')->get();
-
+        
         return DataTables::of($perfil)
                 ->addIndexColumn()
                 ->addColumn('page_inicio',function($perfil){
 
-                    return $perfil->pageInicio->nombre;
+                    $page = '';
+
+                    if(!empty($perfil->pageInicio)){
+                        $page = $perfil->pageInicio->nombre;
+                    }
+
+                    return $page;
 
                 })
                 ->addColumn('isRoot',function($perfil){
@@ -97,19 +103,19 @@ class PerfilController extends Controller
         $respuesta =  false;
         $message = 'No se puede ejecutar la aplicacion';
 
+        $isRoot  = empty($request->is_root) ? '0':'1';
+
         $permiso = permisos($slug,$accion);
 
         if($permiso){
 
-            User::create([
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'password'=>Hash::make($request->password),
-                'perfil_id'=>$request->perfil_id
+            Perfil::create([
+                'nombre'=>$request->nombre,
+                'is_root'=>$isRoot
             ]);
 
             $respuesta = true;
-            $message = "Registro guardado exitosamente.";
+            $message = "Registro guardado exitosamente. value ";
 
         }else{
             $message = 'No tiene los permisos suficientes para completar esta accion';
@@ -131,28 +137,57 @@ class PerfilController extends Controller
     {
         //
         $respuesta = false;
+        $message = 'Error en cosulta, no se encontro el registro';
+
+        $data = Perfil::find($id);
+        
+        if(!empty($data)){
+            $respuesta = true;
+            $message = "Exito";
+        }
+
+        return response()->json([
+            'respuesta'=>$respuesta,
+            'data'=>$data,
+            'message'=>$message
+        ]);
+
+    }
+
+    public function showPages($id){
+        $respuesta = false;
+        $message = '';
 
         $accesos = Perfil::where('id',$id)->with('accesosPerfil')->first();
 
         $data = [];
 
-        foreach ($accesos->accesosPerfil as $acceso) {
-            
-            $idMenu = $acceso->menu_id;
-            $where = array(['slug','<>',''],['visible','=','1'],['id','=',$idMenu]);
+        if(count($accesos->accesosPerfil) > 0){
+            $respuesta =  true;
+            foreach ($accesos->accesosPerfil as $acceso) {
+                
+                $idMenu = $acceso->menu_id;
+                $where = array(['slug','<>',''],['visible','=','1'],['id','=',$idMenu]);
 
-            $menu = Menu::dataCustomColumns($where)->first();
+                $menu = Menu::dataCustomColumns($where)->first();
 
-            if(!empty($menu)){
-                $data[] = array('vista'=>$menu->vista_blade,'nombre'=>$menu->nombre);
+                if(!empty($menu)){
+                    $data[] = array('vista'=>$menu->vista_blade,'nombre'=>$menu->nombre);
+                }
             }
+        }else{
+            $message = "Aun no se le ha concedido permisos para establecer una vista de inicio.";
         }
+
+            
 
         return response()->json([
             'respuesta'=>$respuesta,
-            'data'=>$data
+            'info'=>$accesos->nombre,
+            'default'=>$accesos->page_default,
+            'data'=>$data,
+            'message'=>$message
         ]);
-
     }
 
     /**
@@ -173,9 +208,47 @@ class PerfilController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PerfilFormRequest $request, $id)
     {
-        //
+        $slug = $request->slug;
+        $respuesta = false;
+        $message = 'Error en consulta, no se encontro el registro.';
+
+        $data = [];
+
+        $permiso = permisos($slug,'edit');
+
+        if($permiso){
+
+            $perfil = Perfil::find($id);
+
+            if(!empty($perfil)){
+                
+                if($request->accion == 'edit'){
+
+                    $isRoot  = empty($request->is_root) ? '0':'1';
+
+                    $perfil->nombre = $request->nombre;
+                    $perfil->is_root = $isRoot;
+
+                }elseif ($request->accion=='start') {
+                    $perfil->page_default = $request->page_default;
+                }
+
+                $perfil->save();
+
+                $respuesta = true;
+                $message = "Registro actualizado exitosamente.".$request->accion;
+            }
+
+        }else{
+            $message = 'No tiene los permisos suficientes para completar esta accion';
+        }
+
+        return response()->json([
+                'respuesta'=>$respuesta,
+                'message'=>$message
+        ]);
     }
 
     /**
@@ -184,8 +257,35 @@ class PerfilController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        $slug = $request->slug;
+        
+        $respuesta =  false;
+        $message = 'No se puede ejecutar la aplicacion';
+
+        $permiso = permisos($slug,'delete');
+
+        if($permiso){
+
+            $perfil = Perfil::find($id);
+
+            if(!empty($perfil)){
+                $perfil->delete();
+
+                $respuesta = true;
+                $message = "Registro eliminado exitosamente.";
+            }else{
+                $message = "Registro no existe, no se completo la accion.";
+            }
+
+        }else{
+            $message = 'No tiene los permisos suficientes para completar esta accion';
+        }
+
+        return response()->json([
+            'respuesta'=>$respuesta,
+            'message'=>$message
+        ]);
     }
 }

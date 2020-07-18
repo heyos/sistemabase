@@ -23,11 +23,7 @@
             </li>
           </ol>
         </div>
-        {{-- <div class="content-header-right text-md-right col-md-6 col-12">
-          <div class="btn-group">
-            <button class="btn btn-round btn-info" type="button"><i class="icon-cog3"></i> Settings</button>
-          </div>
-        </div> --}}
+        
       </div>
     </div>
   </div>
@@ -47,7 +43,7 @@
         <div class="card-body">
           <!-- Task List table -->
           <div class="table-responsive">
-            <table id="list-users" class="table table-condensed table-bordered table-middle compact">
+            <table id="list" class="table table-condensed table-bordered table-middle compact">
               <thead class="thead-dark">
                 <tr>
                   <th>#</th>
@@ -73,13 +69,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Registrar Usuario</h5>
+            <h5 class="modal-title">Registrar Perfil</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <form method="post" id="formRol">
+            <form method="post" id="formRegistro">
                 @csrf
                 <input type="hidden" id="accion" name="accion" value="add" required>
                 <input type="hidden" id="id" name="id" value="0" required="">
@@ -108,7 +104,7 @@
   </div>
 </div>
 
-<div id="modalInicio" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+<div id="modalInicio" class="modal fade" role="dialog" aria-hidden="true" style="display: none;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -135,7 +131,7 @@
             </div> 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" id="btn-save" class="btn btn-success">Guardar</button>
+                <button type="button" id="btn-page" class="btn btn-success">Guardar</button>
             </div>
         </div> 
     </div>

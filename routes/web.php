@@ -45,7 +45,13 @@ Route::prefix('admin')->group(function(){
             
             //USUARIOS
             Route::resource('users','UserController');
+
+            //PERFILES
             Route::resource('perfil','PerfilController');
+            Route::prefix('perfil')->group(function(){
+                Route::get('page-default/{id}','PerfilController@showPages');
+            });
+            
         });
 
 

@@ -31,7 +31,7 @@ class UserFormRequest extends FormRequest
                 'accion'=>'in:add,edit',
                 'slug'=>'required|string',
                 'name'=>'required|string|min:3',
-                'email'=>'required|string|email|unique:users,deleted_at,NULL',
+                'email'=>'required|string|email|unique:users,email,deleted_at,NULL',
                 'password'=>'required|string|min:6',
                 'perfil_id'=>'required|numeric'
         ];

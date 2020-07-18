@@ -15,31 +15,28 @@ function accesosPerfil($idPerfil){
 
     return $data;
 
-
 }
 
 function menudata(){
 
     $user = Auth::user();
     $idPerfil = $user->perfil_id;
-    $acceso = accesosPerfil($idPerfil);
+    
 
     $data = array();
     $id = 0;
 
     if(!session()->has('menudata')){
-
+        $accesos = accesosPerfil($idPerfil);
         $menu = Menu::data()->get();
 
         foreach ($menu as $attr) {
             $id = $attr -> id;
             $slug = $attr->slug == ''?'#':$attr->slug;
-            // $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
-            
+                        
+            $dataSub = submenudata($id,$idPerfil,$accesos);
 
-            $dataSub = submenudata($id,$idPerfil);
-
-            if(in_array($id,$acceso)){
+            if(in_array($id,$accesos)){
                 $data[] = array('id'=>$id,
                                 'slug'=>$slug,
                                 'icono'=>$attr->icono,
@@ -57,21 +54,18 @@ function menudata(){
 
 }
 
-function submenudata($idMenu,$idPerfil){
+function submenudata($idMenu,$idPerfil,$accesos){
 
     $data = array();
-    $acceso = accesosPerfil($idPerfil);
-
+    
     $subMenu = Menu::submenu($idMenu)->get();
 
     if(!empty($subMenu)){
         foreach ($subMenu as $attr) {
             $id = $attr -> id;
             $slug = $attr->slug;
-            // $acceso = AccesoPerfilMenu::menuAcceso($idPerfil,$id)->first();
-            
-
-            if(in_array($id,$acceso)){
+                        
+            if(in_array($id,$accesos)){
                 $data[] = array('idSub' => $id,
                                 'nombre' => $attr->nombre,
                                 'nombreLargo' => $attr->nombre_largo,
@@ -139,7 +133,7 @@ function actionPath(){
     $data = array();
     if(strpos($action,'/') !== false){
         $data = explode('/',$action);
-        $slug = $data[1];
+        $slug = $data[1]; //si se quita el prefix admin utilizar la posicion 0
 
     }
 
