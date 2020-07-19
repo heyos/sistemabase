@@ -6,8 +6,6 @@
 
 @section('content')
 
-<input type="hidden" id="slug" value="{{ $slug }}">
-
 <div class="content-wrapper">
   <div class="content-header row">
     <div class="content-header-left  col-12 mb-2">

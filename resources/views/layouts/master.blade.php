@@ -59,6 +59,7 @@
   @include('layouts.menu.menu')
 
   <div class="app-content content">
+    <input type="hidden" id="slug" value="{{ $slug }}">
     @yield('content')
   </div>
 </div>

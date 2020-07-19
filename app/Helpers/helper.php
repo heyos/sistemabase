@@ -22,7 +22,6 @@ function menudata(){
     $user = Auth::user();
     $idPerfil = $user->perfil_id;
     
-
     $data = array();
     $id = 0;
 
@@ -33,8 +32,9 @@ function menudata(){
         foreach ($menu as $attr) {
             $id = $attr -> id;
             $slug = $attr->slug == ''?'#':$attr->slug;
+            $subMenus = $attr->subMenus;
                         
-            $dataSub = submenudata($id,$idPerfil,$accesos);
+            $dataSub = submenudata($id,$subMenus,$accesos);
 
             if(in_array($id,$accesos)){
                 $data[] = array('id'=>$id,
@@ -54,12 +54,10 @@ function menudata(){
 
 }
 
-function submenudata($idMenu,$idPerfil,$accesos){
+function submenudata($idMenu,$subMenu,$accesos){
 
     $data = array();
     
-    $subMenu = Menu::submenu($idMenu)->get();
-
     if(!empty($subMenu)){
         foreach ($subMenu as $attr) {
             $id = $attr -> id;

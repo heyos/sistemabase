@@ -12,7 +12,7 @@ class Menu extends Model
 
     public function scopeData($query){
 
-        return $query->where('padre','0')->orderBy('order');
+        return $query->where('padre','0')->orderBy('order')->with('subMenus');
     }
 
     public function scopeSubMenu($query,$idMenu){
@@ -36,6 +36,10 @@ class Menu extends Model
 
     public function perfiles(){
         return $this->hasMany(Perfil::class,'page_default','vista_blade');
+    }
+
+    public function subMenus(){
+        return $this->hasMany(Menu::class,'padre')->orderBy('menu.order');;
     }
 
 
