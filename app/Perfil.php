@@ -32,6 +32,6 @@ class Perfil extends Model
     }
 
     public function accesosPerfil(){
-        return $this->hasMany(AccesoPerfilMenu::class,'perfil_id');
+        return $this->hasMany(AccesoPerfilMenu::class,'perfil_id')->where('acceso','1');
     }
 }
